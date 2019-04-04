@@ -1,7 +1,7 @@
 import React from 'react';
 import { Query, Mutation } from 'react-apollo';
 import { gql } from 'apollo-boost';
-import randomSentence from 'random-sentence';
+import TodoList from './TodoList';
 
 const GET_TODOS = gql`
   {
@@ -9,13 +9,20 @@ const GET_TODOS = gql`
       id
       title
       completed
+      user {
+        id
+        name
+        todos {
+          completed
+        }
+      }
     }
   }
 `;
 
-const ADD_TODO = gql`
-  mutation AddTodo($id: Int!, $title: String!, $completed: Boolean!) {
-    addTodo(id: $id, completed: $completed, title: $title) {
+const UPDATE_TODO = gql`
+  mutation UpdateTodo($id: Int!, $completed: Boolean) {
+    updateTodo(id: $id, completed: $completed) {
       id
       completed
     }
@@ -25,30 +32,17 @@ const ADD_TODO = gql`
 const Todos = () => (
   <Query query={GET_TODOS}>
     {({ data: { todos = [] }, loading, error }) => (
-      <Mutation mutation={ADD_TODO} refetchQueries={[{ query: GET_TODOS }]}>
-        {(addTodo, { loading: isUpdating }) => {
+      <Mutation mutation={UPDATE_TODO} refetchQueries={[{ query: GET_TODOS }]}>
+        {(updateTodo, { loading: isUpdating }) => {
           const isLoading = loading || isUpdating;
-          const data = { isLoading, todos };
+
           return (
-            <>
-              <pre>
-                <code>{JSON.stringify(data, null, 4)}</code>
-              </pre>
-              <button
-                type="button"
-                onClick={() =>
-                  addTodo({
-                    variables: {
-                      id: todos.length,
-                      title: randomSentence({ min: 5, max: 9 }),
-                      completed: false
-                    }
-                  })
-                }
-              >
-                Add todo
-              </button>
-            </>
+            <TodoList
+              isLoading={isLoading}
+              error={error}
+              dataSet={todos}
+              onUpdateOne={variables => updateTodo({ variables })}
+            />
           );
         }}
       </Mutation>

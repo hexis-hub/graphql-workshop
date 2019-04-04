@@ -6,26 +6,36 @@ const {
   GraphQLInt,
   GraphQLList
 } = require('graphql');
-
-const todos = [
-  {
-    id: 0,
-    title: 'Create GraphQL boilerplate',
-    completed: true
-  },
-  {
-    id: 1,
-    title: 'Respond using a DB or another API',
-    completed: false
-  }
-];
+const todosApiService = require('./todos-api-service');
+const usersApiService = require('./users-api-service');
 
 const todoType = new GraphQLObjectType({
   name: 'Todo',
   fields: () => ({
     id: { type: GraphQLInt },
     title: { type: GraphQLString },
-    completed: { type: GraphQLBoolean }
+    completed: { type: GraphQLBoolean },
+    user: {
+      type: userType,
+      resolve: ({ userId }) => usersApiService.getById(userId)
+    }
+  })
+});
+
+const userType = new GraphQLObjectType({
+  name: 'User',
+  fields: () => ({
+    id: { type: GraphQLInt },
+    name: { type: GraphQLString },
+    jobTitle: { type: GraphQLString },
+    todos: {
+      type: new GraphQLList(todoType),
+      args: {
+        completed: { type: GraphQLBoolean },
+        limit: { type: GraphQLInt }
+      },
+      resolve: ({ id: userId }) => todosApiService.get({ userId })
+    }
   })
 });
 
@@ -34,7 +44,25 @@ const query = new GraphQLObjectType({
   fields: {
     todos: {
       type: new GraphQLList(todoType),
-      resolve: () => todos
+      resolve: () => todosApiService.get()
+    },
+    todo: {
+      type: todoType,
+      args: {
+        id: { type: GraphQLInt }
+      },
+      resolve: (__, { id }) => todosApiService.getById(id)
+    },
+    users: {
+      type: new GraphQLList(userType),
+      resolve: () => usersApiService.get()
+    },
+    user: {
+      type: userType,
+      args: {
+        id: { type: GraphQLInt }
+      },
+      resolve: (__, { id }) => usersApiService.getById(id)
     }
   }
 });
@@ -42,17 +70,14 @@ const query = new GraphQLObjectType({
 const mutation = new GraphQLObjectType({
   name: 'Mutation',
   fields: {
-    addTodo: {
+    updateTodo: {
       type: todoType,
       args: {
         id: { type: GraphQLInt },
-        title: { type: GraphQLString },
         completed: { type: GraphQLBoolean }
       },
-      resolve: (_, todo) => {
-        todos.push(todo);
-        return todo;
-      }
+      resolve: (_, { id, completed }) =>
+        todosApiService.update(id, { completed })
     }
   }
 });
