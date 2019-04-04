@@ -1,7 +1,10 @@
 const express = require('express');
 const graphqlHTTP = require('express-graphql');
 const cors = require('cors');
+const DataLoader = require('dataloader');
 const schema = require('./schema');
+const usersApiService = require('./users-api-service');
+const todosApiService = require('./todos-api-service');
 
 const app = express();
 const PORT = 4000;
@@ -12,7 +15,15 @@ app.use(
   '/graphql',
   graphqlHTTP(() => ({
     schema,
-    graphiql: true
+    graphiql: true,
+    context: {
+      usersLoader: new DataLoader(usersApiService.get),
+      todosByUserLoader: new DataLoader(async userIds => {
+        return userIds.map(({ userId, completed, limit }) =>
+          todosApiService.get({ userId, completed }, limit)
+        );
+      })
+    }
   }))
 );
 

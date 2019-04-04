@@ -17,7 +17,7 @@ const todoType = new GraphQLObjectType({
     completed: { type: GraphQLBoolean },
     user: {
       type: userType,
-      resolve: ({ userId }) => usersApiService.getById(userId)
+      resolve: ({ userId }, __, { usersLoader }) => usersLoader.load(userId)
     }
   })
 });
@@ -34,7 +34,8 @@ const userType = new GraphQLObjectType({
         completed: { type: GraphQLBoolean },
         limit: { type: GraphQLInt }
       },
-      resolve: ({ id: userId }) => todosApiService.get({ userId })
+      resolve: ({ id }, { completed, limit }, { todosByUserLoader }) =>
+        todosByUserLoader.load({ userId: id, completed, limit })
     }
   })
 });
