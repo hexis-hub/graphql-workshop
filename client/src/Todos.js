@@ -24,15 +24,17 @@ const ADD_TODO = gql`
 
 const Todos = () => (
   <Query query={GET_TODOS}>
-    {({ data: { todos = [] }, loading, error }) => (
+    {({ data = {}, loading, error }) => (
       <Mutation mutation={ADD_TODO} refetchQueries={[{ query: GET_TODOS }]}>
         {(addTodo, { loading: isUpdating }) => {
+          const todos = data.todos || [];
           const isLoading = loading || isUpdating;
-          const data = { isLoading, todos };
+
+          const result = { isLoading, todos };
           return (
             <>
               <pre>
-                <code>{JSON.stringify(data, null, 4)}</code>
+                <code>{JSON.stringify(result, null, 4)}</code>
               </pre>
               <button
                 type="button"

@@ -10,12 +10,8 @@ Feel free to fork this repo and create your own GraphQL project.
 
 ## Scripts
 
-### `yarn start:watch`
-
-- Starts only the graphQL server
-
 ### `yarn start:dev`
 
 - Starts the server and the client
 
-> Note: The client source code is under the `client` folder. The server source code is under the `src` folder.
+> Note: The client source code is under the `client` folder. The server source code is under the `server` folder.
