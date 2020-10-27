@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "apollo-boost": "^0.4.9",
-    "graphql": "^15.3.0",
+    "graphql": "^15.4.0",
     "grommet": "^2.15.2",
     "grommet-icons": "^4.5.0",
     "random-sentence": "^1.0.4",
