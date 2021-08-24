@@ -5144,10 +5144,10 @@ graphql@^15.3.0:
   resolved "https://registry.yarnpkg.com/graphql/-/graphql-15.3.0.tgz#3ad2b0caab0d110e3be4a5a9b2aa281e362b5278"
   integrity sha512-GTCJtzJmkFLWRfFJuoo9RWWa/FfamUHgiFosxi/X1Ani4AVWbeyBenZTNX6dM+7WSbbFfTo/25eh0LLkwHMw2w==
 
-grommet-icons@^4.2.0, grommet-icons@^4.5.0:
-  version "4.5.0"
-  resolved "https://registry.yarnpkg.com/grommet-icons/-/grommet-icons-4.5.0.tgz#855ad26338ea1a1503eb18fdae428c431332be6a"
-  integrity sha512-q7TNXV996fDh2e++7WapiNFUk0UEll17iEZ2d75W4yz+8Bb3+vdQ1MeT/d1RRlM0pV2KnTpSeR00GeN4KA9upg==
+grommet-icons@^4.2.0, grommet-icons@^4.6.1:
+  version "4.6.1"
+  resolved "https://registry.yarnpkg.com/grommet-icons/-/grommet-icons-4.6.1.tgz#5fc8116160c8626f0ff93d8339acf632be26ddf5"
+  integrity sha512-DimRmfF5mJHkWjBcx7mkJ9zbdmWKvMpDQR0oVZ4HCcGmyEPndonlnypjXAlec8awTwjaXKdiZfgUiWyMtdViIg==
   dependencies:
     grommet-styles "^0.2.0"
 
