@@ -6,7 +6,7 @@
     "apollo-boost": "^0.4.9",
     "graphql": "^15.3.0",
     "grommet": "^2.15.2",
-    "grommet-icons": "^4.5.0",
+    "grommet-icons": "^4.8.0",
     "random-sentence": "^1.0.4",
     "react": "^16.14.0",
     "react-apollo": "^3.1.5",
